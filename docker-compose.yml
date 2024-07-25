@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  transfer_postgres:
+    image: 'postgres:14'
+    container_name: 'postgres_14_transfer'
+    environment:
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: 'blank'
+      POSTGRES_USER: 'root'
+    ports:
+      - '5437:5437'
+    command: -p 5437
+    volumes:
+      - postgres-data-transfer:/var/lib/postgresql/data
+      - postgres-init-transfer:/docker-entrypoint-initdb.d
+      - ./sql:/sql
+    restart: always
+    networks:
+      - TRANSFER_APP
+
+networks:
+  TRANSFER_APP:
+    driver: bridge
+volumes:
+  postgres-data-transfer:
+  postgres-init-transfer:
