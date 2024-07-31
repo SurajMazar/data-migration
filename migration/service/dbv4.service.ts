@@ -30,7 +30,7 @@ export const upSortDataToV4 = async (tx: any, table: string, data: any, mappings
         for (let j = 0; j < formatData.length; j++) {
             const item = formatData[j]
             if (!columns) {
-                columns = Object.keys(item).join(',')
+                columns = Object.keys(item).map(item=>`"${item}"`).join(',')
             }
             values.push(Object.values(item).map(item => {
                 if (item) {
@@ -60,6 +60,8 @@ export const upSortDataToV4 = async (tx: any, table: string, data: any, mappings
         /**
          * UP SORT QUERY
          */
+        console.log(`INSERT INTO ${table} (${columns})
+                                      VALUES ${valuesFormatted}`)
         await tx.$queryRawUnsafe(`INSERT INTO ${table} (${columns})
                                       VALUES ${valuesFormatted}`)
 
